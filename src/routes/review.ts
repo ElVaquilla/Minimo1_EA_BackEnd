@@ -4,7 +4,7 @@ import { reviewController } from '../controller/review'
 const router = express.Router()
 const review_controller: reviewController = new reviewController();
 
-router.get('/:page/:limit', async(_req, res) => {
+router.get('/:id/:page/:limit', async(_req, res) => {
     review_controller.getAll(_req, res);
 })
 

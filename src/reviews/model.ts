@@ -1,9 +1,8 @@
-import { ObjectId} from "mongoose"
+import mongoose, { ObjectId} from 'mongoose'
 
 
 export interface IReview {
     user: ObjectId,
     property: ObjectId,
-    date: Date,
-    description: string
+    rating: number,
 }

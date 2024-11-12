@@ -45,30 +45,35 @@ export class propertyController {
         }
     } */
 
-    public async getAll(req: Request, res: Response) {
-        try {
-            console.log("funciona get all");
-            //const activity_filter = {};
-            const property_data = await propertiesServices.getEntries.getAll();
-            let total=property_data.length;
-            const page = Number(req.params.page); // Convertir a número
-            const limit = Number(req.params.limit); // Convertir a número
-           
-            const startIndex = (page - 1) * limit;
-            const endIndex = page * limit;
-            let totalPages= Math.ceil(total/limit);
-    
-            
-            const resultProperty = property_data.slice(startIndex, endIndex);
-            console.log(resultProperty, totalPages,total);
-            return res.status(200).json({properties:resultProperty,totalPages:totalPages,totalActivity:total});
-            
-        } catch (error) {
-            
-            console.error('Error en la solicitud:', error);
-            return res.status(500).json({ message: 'Error interno del servidor' });
-        }
-    }
+        public async getAll(req: Request, res: Response) {
+            try {
+                console.log("funciona get all");
+        
+                // Obtiene todas las propiedades
+                const property_data = await propertiesServices.getEntries.getAll();
+                let total = property_data.length;
+        
+                // Ordena por número de reviews, de mayor a menor
+                property_data.sort((a, b) => (b.rating?.length || 0) - (a.rating?.length || 0));
+        
+                // Maneja la paginación
+                const page = Number(req.params.page); // Convertir a número
+                const limit = Number(req.params.limit); // Convertir a número
+                const startIndex = (page - 1) * limit;
+                const endIndex = page * limit;
+                let totalPages = Math.ceil(total / limit);
+        
+                // Aplica la paginación después de ordenar
+                const resultProperty = property_data.slice(startIndex, endIndex);
+        
+                console.log(resultProperty, totalPages, total);
+                return res.status(200).json({ properties: resultProperty, totalPages: totalPages, totalActivity: total });
+                
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                return res.status(500).json({ message: 'Error interno del servidor' });
+            }
+        }        
 
     public async deleteProperty(req: Request, res: Response) {
         const propertyId = req.params.id;

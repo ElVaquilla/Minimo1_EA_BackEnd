@@ -5,7 +5,7 @@ export interface IProperty{
     owner: ObjectId,
     address: string,
     description?: String,
-    //rating?: number,
+    rating?: ObjectId[],
     //coordinate?: [number,number],
     //picture: [string]
 }
